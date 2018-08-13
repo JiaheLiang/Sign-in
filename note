@@ -1,0 +1,84 @@
+
+
+CREATE TABLE `ulist`.`ul_user` (
+  `user_id` BIGINT NULL AUTO_INCREMENT,
+  `user_name` VARCHAR(45) NULL,
+  `user_username` VARCHAR(45) NULL,
+  `user_password` VARCHAR(45) NULL,
+  PRIMARY KEY (`user_id`));
+
+UPDATE `mysql`.`proc` p SET definer = 'user@%' WHERE definer='root@%'
+GRANT ALL ON *.* TO 'root'@'%' IDENTIFIED BY 'complex-password';
+FLUSH PRIVILEGES;  
+  
+DELIMITER $$
+CREATE DEFINER=`root`@`%` PROCEDURE `ulist`.`sp_createUser`(
+    IN p_name VARCHAR(20),
+    IN p_username VARCHAR(20),
+    IN p_password VARCHAR(20)
+)
+BEGIN
+    if ( select exists (select 1 from ul_user where user_username = p_username) ) THEN
+        select 'Username Exists !!';
+    ELSE
+        insert into ul_user
+        (
+            user_name,
+            user_username,
+            user_password
+        )
+        values
+        (
+            p_name,
+            p_username,
+            p_password
+        );
+    END IF;
+END$$
+DELIMITER ;
+
+$ pip install flask-mysql
+and the module name is flaskext.mysql
+
+
+111
+down vote
+Python uses spacing at the start of the line to determine when code blocks start and end. Errors you can get are:
+
+Unexpected indent. This line of code has more spaces at the start than the one before, 
+but the one before is not the start of a subblock (e.g. if/while/for statement). 
+All lines of code in a block must start with exactly the same string of whitespace. For instance:
+
+>>> def a():
+...   print "foo"
+...     print "bar"
+IndentationError: unexpected indent
+This one is especially common when running python interactively: 
+make sure you don't put any extra spaces before your commands. (Very annoying when copy-and-pasting example code!)
+
+>>>   print "hello"
+IndentationError: unexpected indent
+Unindent does not match any outer indentation level. 
+This line of code has fewer spaces at the start than the one before, but equally it does not match any other block it could be part of. 
+Python cannot decide where it goes. For instance, in the following, is the final print supposed to be part of the if clause, or not?
+
+>>> if user == "Joey":
+...     print "Super secret powers enabled!"
+...   print "Revealing super secrets"
+IndendationError: unindent does not match any outer indentation level
+Expected an indented block. This line of code has the same number of spaces at the start as the one before, 
+but the last line was expected to start a block (e.g. if/while/for statement, function definition).
+
+>>> def foo():
+... print "Bar"
+IndentationError: expected an indented block
+If you want a function that doesn't do anything, use the "no-op" command pass:
+
+>>> def foo():
+...     pass
+Mixing tabs and spaces is allowed (at least on my version of Python), 
+but Python assumes tabs are 8 characters long, which may not match your editor. 
+Just say "no" to tabs. Most editors allow them to be automatically replaced by spaces.
+
+The best way to avoid these issues is to always use a consistent number of spaces when you indent a subblock, 
+and ideally use a good IDE that solves the problem for you. This will also make your code more readable.
